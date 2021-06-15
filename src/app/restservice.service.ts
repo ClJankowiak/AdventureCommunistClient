@@ -9,7 +9,7 @@ import { World, Pallier, Product } from './world';
 export class RestserviceService {
 
   //Ajout tuto
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.server = "http://localhost:8080/";
     this.user="";
   }
@@ -34,9 +34,9 @@ export class RestserviceService {
     return Promise.reject(error.message || error);
   }
   getWorld(): Promise<World> {
-    pathWorld : string;
-    pathWorld = "adventureCOCO/generic/world";
-    return this.http.get(this.server + pathWorld).toPromise().catch(this.handleError);
+    //pathWorld : string;
+    //pathWorld = "adventureCOCO/generic/world";
+    return this.http.get(this.server + "adventureCOCO/generic/world").toPromise().catch(this.handleError);
   };
 
   //--
