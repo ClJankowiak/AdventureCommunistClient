@@ -8,21 +8,25 @@ import { World, Pallier, Product } from './world';
 })
 export class RestserviceService {
 
-  constructor() { }
   //Ajout tuto
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    this.server = "http://localhost:8080/";
+    this.user="";
+  }
   //--
 
   //Ajout tuto
   private server : string;
-  server = "http://localhost:8080/";
   private user : string;
 
-  get user(): string {
+  getuser(): string {
           return this.user;
   }
-  set user(u : string){
-    user = u;
+  setuser(u : string){
+    this.user = u;
+  }
+  getServer(): string{
+    return this.server;
   }
 
   private handleError(error: any): Promise<any> {
@@ -30,7 +34,9 @@ export class RestserviceService {
     return Promise.reject(error.message || error);
   }
   getWorld(): Promise<World> {
-    return this.http.get(this.server + "adventureisis/generic/world").toPromise().catch(this.handleError);
+    pathWorld : string;
+    pathWorld = "adventureCOCO/generic/world";
+    return this.http.get(this.server + pathWorld).toPromise().catch(this.handleError);
   };
 
   //--
