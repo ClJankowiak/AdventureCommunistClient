@@ -10,12 +10,20 @@ import { World, Product, Pallier } from './world';
 })
 export class AppComponent {
   //Ajout tuto
-  private world: World = new World();
+  public world: World = new World();
   private server: string;
+  public showManagers:boolean =false;
+
   constructor(private service: RestserviceService) {
     this.server = service.getServer();
     service.getWorld().then(
-      world => { this.world = world; });
+      world => { this.world = world; }
+      );
+  }
+
+  showManagersFunc(){
+    this.showManagers=true;
   }
   //--
+
 }

@@ -1,1 +1,131 @@
-<p>product works!</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+  .gridProduit{
+    display: grid;
+  }
+  .gridSousProduit{
+    display: grid;
+  }
+  #infoGeneral{
+    grid-column:1;
+    width:30%;
+    z-index: 1;
+  }
+  #coutprod{
+    grid-column:2/9;
+    position:relative;
+    right:80px;
+    padding:20px;
+  }
+
+  #nom{
+    grid-row:1;
+    z-index: 2;
+    text-transform: capitalize;
+    background: linear-gradient(to top right, #A02921 , #80201A);;
+    padding: 5px;
+    text-align:center;
+    border-radius:0px 0px 50px 0px;
+    color:WHITE;
+    font-family: 'Russo One', sans-serif;
+    position:relative;
+    top:20px;
+    width: 85%;
+  }
+  #imageProduit{
+    grid-row:1;
+    text-align:center;
+  }
+  img{
+    width:85px;
+    height:85px;
+    border-radius: 25%;
+  }
+  #nombre{
+    grid-row:2;
+    text-transform: capitalize;
+    background-color: #BC0000;
+    padding: 10px;
+    text-align:center;
+    border-radius:15%;
+    color:WHITE;
+    font-family: 'Russo One', sans-serif;
+    position:relative;
+    bottom:10px;
+  }
+  #production{
+    grid-row:1;
+    background-color: #A02921;
+    border-radius: 0px 0px 50px 0px;
+    text-align:center;
+    opacity:80%;
+    color:white;
+    border:solid 2px #80201A;
+    max-height: 50px;
+  }
+  #cout{
+    grid-row:2;
+    background-color: #80201A;
+    width: 83%;
+    border-radius: 0px 0px 50px 0px;
+    text-align:center;
+    opacity:80%;
+    color:white;
+    border:solid 2px #6b100b;
+    max-height: 40px;
+    position:relative;
+    bottom:2px;
+  }
+  #cout:hover{
+    opacity:100%;
+  }
+  .progressBarre{
+    height:100%;
+    border-radius: 0px 0px 50px 0px;
+    color:RED;
+  }
+  ::ng-deep .mat-progress-bar-fill::after {
+    background:
+      repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,.2) 0,
+        rgba(255,255,255,.2) 10px,
+        rgba(255,255,255,0) 10px,
+        rgba(255,255,255,0) 20px
+      ),
+      linear-gradient(
+        rgba(255,255,255,.1) 50%,
+        rgba(255,255,255,0) 60%
+      ),
+      #80201A;
+  }
+}
+
+
+
+</style>
+<div class="gridProduit" id="produitNom">
+  <div id="nom">
+    {{product.name}}
+  </div>
+  <div class="gridProduit" id="produitgeneral">
+    <div class="gridSousProduit" id="infoGeneral">
+      <div id="imageProduit">
+        <img (click)="startFabrication()" [src]="'http://192.168.43.13:2612/icones/' + product.logo">
+      </div>
+      <div id="nombre">
+        {{product.quantite}}
+      </div>
+    </div>
+    <div class="gridSousProduit" id="coutprod">
+      <div id="production">
+        <mat-progress-bar class="progressBarre" mode="determinate" [value]="progressBarreValue">
+        </mat-progress-bar>
+      </div>
+      <div (click)="achatProduit()" id="cout">
+        {{prixSuivant}}
+      </div>
+    </div>
+  </div>
+</div>

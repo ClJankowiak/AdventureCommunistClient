@@ -8,23 +8,26 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 /*
   Sépare l'entete du reste
 */
-
 .wrapperPrincipal{
   display: grid;
-  grid-gap: 10px;
   grid-row: auto;
-  grid-auto-rows: minmax(100px, auto);
+  height:100%;
 }
 header{
   grid-row: 1;
-  background-color : BLUE;
-  opacity:40%;
+  background: linear-gradient(to top right, #A02921 , #80201A);
+  border:solid 1px #80201A;
 }
 #wrapMenu{
-  grid-row: 2;
+  grid-row: 2/20;
+  background-image: url("https://www.pieuvre.ca/wp-content/uploads/2020/03/superman-red-son.jpg");
+  height:100%;
 }
 
 /*
@@ -34,14 +37,34 @@ Sépare les différentes div du header
 .wrapperHeader{
   display: grid;
 }
+#monde{
+  grid-column:1;
+}
+#logo-monde{
+  position:absolute;
+  margin:10px;
+  width:12%;
+  height:auto;
+  overflow: visible;
+}
+#nom-monde{
+  position:absolute;
+  top:25%;
+  left:20px;
+  text-align:center;
+  background-color: #BC0000;
+  padding:3px;
+
+  color:WHITE;
+}
 #profil{
-  grid-column: ;
+  grid-column:2;
 }
 #portefeuille{
-  grid-column: 2;
+  grid-column: 3;
 }
 #autre{
-  grid-column: 3;
+  grid-column: 4;
 }
 
 
@@ -55,8 +78,6 @@ Sépare menu du corps
 }
 #menu{
   grid-column: 1;
-  background-color:GREEN;
-  opacity:40%;
 }
 #corps{
   grid-column: 2 / 9;
@@ -67,14 +88,37 @@ Sépare menu du corps
 Sépare les différents boutons
 */
 .wrapperMenu{
+  position:relative;
+  top:30%;
   display: grid;
   grid-gap: 10px;
-}
-button{
-  width:auto;
-  margin:4px;
+  height:50%;
 }
 
+.menu-buttons{
+  margin:4px;
+  grid-row: auto;
+  background-color: #A02921;
+  font-family: 'Russo One', sans-serif;
+  font-size:large;
+  border-radius: 0px 10px 10px 0px;
+  position:relative;
+  right:40px;
+  color:WHITE;
+  transition: transform 0.5s;
+  border:solid 1px #80201A;
+}
+.menu-buttons:hover{
+  transform: translate(30px, 0px);
+  box-shadow: 1px 1px 0px #2F2F2F;
+}
+
+
+
+.icon-coco{
+  width:10%;
+  height:auto;
+}
 
 
 /*
@@ -87,8 +131,6 @@ Sépare les différents produits
   grid-auto-rows: minmax(150px, auto);
 }
 .case{
-  background-color:RED;
-  opacity:40%;
 }
 .one {
   grid-column: 1 ;
@@ -119,58 +161,138 @@ Sépare les différents produits
 AUTRE CSS
 */
 body{
-  background-image: url("https://www.pieuvre.ca/wp-content/uploads/2020/03/superman-red-son.jpg");
+  height:100%;
+  font-family: 'Russo One', sans-serif;
 }
+.modal {
+ position: fixed; /* reste en place */
+ z-index: 2; /* au dessus du reste */
+ width: 800px; /* largeur */
+ height: 800px; /* hauteur */
+ overflow: auto; /* barre de scroll si besoin */
+ background-color: white; /* opaque */
+ border: solid;
+ top:10; /* a 10% du haut */
+ left:20%; /* a 20% de la gauche */
+}
+
 
 </style>
 
 <!--
 <img [attr.src]="server+world.logo" /> </span>
 <span id="worldname"> {{world.name}} </span>
-<app-product [prod]="world.products.product[0]"
-class="product col-md-6"></app-product>
+
 -->
 <body>
   <div class=" wrapperPrincipal">
     <header class="wrapperHeader">
+      <div id="monde">
+        <img id="logo-monde" src="https://www.lutte-ouvriere.org/sites/default/files/styles/body_scale/public/about/Revolution-Fist.jpg?itok=3CWxDPBG">
+        <div id="nom-monde">{{world.name}}</div>
+      </div>
       <div id="profil">
-        <div>Image</div>
         <div>Nom du joueur</div>
       </div>
       <div id="portefeuille">
-        ARGENT
+        Nous avons <span [innerHTML]="world.money | bigvalue"> </span> travailleurs
       </div>
       <div id="autre">
-        AUTRE
+        SCORE :
+        <span id="score"> {{world.score}} </span>
       </div>
     </header>
     <div id="wrapMenu" class=" wrapperCorps">
       <div id="menu" class="wrapperMenu">
-        Menu
-        <button>Unlock</button>
-        <button>Upgrade</button>
-        <button>Manager</button>
-        <button>Angel</button>
+        <button class="menu-buttons">
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;Unlocks&nbsp;&nbsp;&nbsp;&nbsp;
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+        </button>
+        <button class="menu-buttons">
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;Upgrades&nbsp;&nbsp;&nbsp;&nbsp;
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+        </button>
+        <button class="menu-buttons" (click)="showManagersFunc()">
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+          &nbsp;&nbsp;&nbsp;&nbsp;Leaders Supremes&nbsp;&nbsp;&nbsp;&nbsp;
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+        </button>
+        <button class="menu-buttons">
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+          &nbsp;&nbsp;Camarades&nbsp;&nbsp;
+          <img class="icon-coco"
+               src="assets/etoile.png" alt="Save icon"/>
+        </button>
       </div>
       <div id="corps" class=" wrapperProduit">
         <div class="case one">
-          ONE
+
+          <app-product [prod]="world.products.product[0]">
+
+          </app-product>
         </div>
         <div class="case two">
-          TWO
+          <app-product [prod]="world.products.product[1]">
+
+          </app-product>
         </div>
         <div class="case three">
-          THREE
+          <app-product [prod]="world.products.product[2]">
+
+          </app-product>
         </div>
         <div class="case four">
-          FOUR
+          <app-product [prod]="world.products.product[3]">
+
+          </app-product>
         </div>
         <div class="case five">
-          FIVE
+          <app-product [prod]="world.products.product[4]">
+
+          </app-product>
         </div>
         <div class="case SIX">
-          SIX
+          <app-product [prod]="world.products.product[5]">
+
+          </app-product>
         </div>
+      </div>
+
+    </div>
+
+
+
+
+    <!--MANAGER DIV-->
+    <div *ngIf="showManagers" class="modal">
+      <div><h1 class="title">Quels leaders supremes vont rejoindre la mère patrie aujourd'hui !</h1></div>
+      <div>
+        <div *ngFor="let manager of world.managers.pallier">
+          <div *ngIf="!manager.unlocked" class="managerslayout">
+            <div>
+              <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
+            </div>
+            <div>
+              <div class="managername"> {{ manager.name}} </div>
+              <div class="managercible"> {{ world.products.product[manager.idcible1].name }} </div>
+              <div class="managercost"> {{ manager.seuil}} </div>
+            </div>
+            <div>
+              <div class="hirebutton" (click)="hireManager(manager)"
+                   [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+            </div>
+          </div>
+        </div>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="showManagers = !showManagers">Close</button>
       </div>
     </div>
   </div>
