@@ -122,9 +122,11 @@ export class AppComponent {
     audio.play();
     //this.test=audio.src;
   }
+
+  resetWorld(){}
   //--
-  applyReset(private service: RestserviceService) {
-    this.resetWorld():
+  applyReset(service: RestserviceService) {
+    this.resetWorld();
     service.getWorld().then(
           world => { this.world = world; }
     );
