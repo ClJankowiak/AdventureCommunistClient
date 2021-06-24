@@ -48,5 +48,29 @@ export class RestserviceService {
     //return this.http.get(this.server + "Marseille-Capitalist/generic/world").toPromise().catch(this.handleError);
   };
 
+  putManager(manager : Pallier): Promise<Response> {
+      return this.http.put(this.server+"adventurecommunist/generic/manager", manager, {headers: this.setHeaders(this.user)})
+      .toPromise();
+    }
+
+  putProduct(product : Product): Promise<Response> {
+    return this.http.put(this.server+"adventurecommunist/generic/product", product, {headers: this.setHeaders(this.user)})
+          .toPromise();
+  }
+
+  putUpgrades(upgrade : Pallier): Promise<Response> {
+    return this.http.put(this.server+"adventurecommunist/generic/upgrade", upgrade, {headers: this.setHeaders(this.user)})
+          .toPromise();
+  }
+
+  resetWorld(): Promise<Response> {
+    return this.http.delete(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
+    //forcer le reload dans le app component dans la méthode qui appelle reset (ou rappeler getWorld)
+  }
+
+  putAngelUpgrade(angelupgrade : Pallier): Promise<Response> {
+    return this.http.put(this.server+"adventurecommunist/generic/angelupgrade", angelupgrade, {headers: this.setHeaders(this.user)})
+              .toPromise();
+  }
   //--
 }
