@@ -60,7 +60,6 @@ export class AppComponent {
 
   }
 
-
   onProductionDone(P : Product){
     this.world.money=this.world.money+(P.revenu*P.quantite);
     this.updateScore(P.revenu*P.quantite);
@@ -98,5 +97,11 @@ export class AppComponent {
     //this.test=audio.src;
   }
   //--
+  applyReset(private service: RestserviceService) {
+    this.resetWorld():
+    service.getWorld().then(
+          world => { this.world = world; }
+    );
+  }
 
 }
