@@ -23,6 +23,7 @@ header{
   grid-row: 1;
   background: linear-gradient(to top right, #A02921 , #80201A);
   border:solid 1px #80201A;
+  color:WHITE;
 }
 #wrapMenu{
   grid-row: 2/20;
@@ -50,11 +51,10 @@ Sépare les différentes div du header
 #nom-monde{
   position:absolute;
   top:25%;
-  left:20px;
+  left:11px;
   text-align:center;
   background-color: #BC0000;
   padding:3px;
-
   color:WHITE;
 }
 #profil{
@@ -167,15 +167,47 @@ body{
 .modal {
  position: fixed; /* reste en place */
  z-index: 2; /* au dessus du reste */
- width: 800px; /* largeur */
- height: 800px; /* hauteur */
+ width: 500px; /* largeur */
+ height: 500px; /* hauteur */
  overflow: auto; /* barre de scroll si besoin */
- background-color: white; /* opaque */
  border: solid;
- top:10; /* a 10% du haut */
- left:20%; /* a 20% de la gauche */
-}
+ top:10%; /* a 10% du haut */
+ left:35%; /* a 20% de la gauche */
 
+  text-transform: capitalize;
+  color:WHITE;
+  font-family: 'Russo One', sans-serif;
+  background-image:url("https://wallpaperaccess.com/full/1401904.jpg");
+  background-size: 140%;
+}
+.imgManager{
+  width:50px;
+  height:auto;
+  border-radius: 50%;
+}
+table{
+  width:100%;
+}
+tr{
+  width:100%;
+  background-color:#A02921;
+  opacity:50%;
+}
+tr:hover{
+  opacity:100%;
+}
+td{
+  width:20%;
+}
+.imgProduitManager{
+  width:50px;
+  height:auto;
+}
+closebutton{
+  position:fixed;
+  top:0px;
+  right:0px;
+}
 
 </style>
 
@@ -185,6 +217,7 @@ body{
 
 -->
 <body>
+{{test}}{{testBoolean}}{{testNumber}}
   <div class=" wrapperPrincipal">
     <header class="wrapperHeader">
       <div id="monde">
@@ -204,14 +237,15 @@ body{
     </header>
     <div id="wrapMenu" class=" wrapperCorps">
       <div id="menu" class="wrapperMenu">
-        <button class="menu-buttons">
+        <button class="menu-buttons" (click)="showUnlocksFunc()">
           <img class="icon-coco"
                src="assets/etoile.png" alt="Save icon"/>
           &nbsp;&nbsp;&nbsp;&nbsp;Unlocks&nbsp;&nbsp;&nbsp;&nbsp;
           <img class="icon-coco"
                src="assets/etoile.png" alt="Save icon"/>
         </button>
-        <button class="menu-buttons">
+        <button class="menu-buttons"
+                (click)="showUpgradesFunc()">
           <img class="icon-coco"
                src="assets/etoile.png" alt="Save icon"/>
           &nbsp;&nbsp;&nbsp;&nbsp;Upgrades&nbsp;&nbsp;&nbsp;&nbsp;
@@ -225,7 +259,7 @@ body{
           <img class="icon-coco"
                src="assets/etoile.png" alt="Save icon"/>
         </button>
-        <button class="menu-buttons">
+        <button class="menu-buttons" (click)="showAngelsFunc()">
           <img class="icon-coco"
                src="assets/etoile.png" alt="Save icon"/>
           &nbsp;&nbsp;Camarades&nbsp;&nbsp;
@@ -235,38 +269,39 @@ body{
       </div>
       <div id="corps" class=" wrapperProduit">
         <div class="case one">
-
-          <app-product [prod]="world.products.product[0]">
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[0]">
 
           </app-product>
         </div>
         <div class="case two">
-          <app-product [prod]="world.products.product[1]">
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[1]">
 
           </app-product>
         </div>
         <div class="case three">
-          <app-product [prod]="world.products.product[2]">
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[2]">
 
           </app-product>
         </div>
         <div class="case four">
-          <app-product [prod]="world.products.product[3]">
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[3]">
 
           </app-product>
         </div>
         <div class="case five">
-          <app-product [prod]="world.products.product[4]">
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[4]">
 
           </app-product>
         </div>
         <div class="case SIX">
-          <app-product [prod]="world.products.product[5]">
-
+          <app-product [qtmulti]="this.commutateurString" [money]="world.money" (notifyProduction)="onProductionDone($event)" (notifyAchat)="onBuy($event)" [prod]="world.products.product[5]">
           </app-product>
         </div>
       </div>
+      <div>
 
+        <button (click)="changeCommu()">{{this.commutateurString}}</button>
+      </div>
     </div>
 
 
@@ -274,7 +309,38 @@ body{
 
     <!--MANAGER DIV-->
     <div *ngIf="showManagers" class="modal">
-      <div><h1 class="title">Quels leaders supremes vont rejoindre la mère patrie aujourd'hui !</h1></div>
+      <button class="closebutton" mat-raisedbutton color="primary" (click)="showManagers = !showManagers">X</button>
+      <div class="titl">Quels leaders supremes vont rejoindre la mère patrie aujourd'hui ?!</div>
+      <div>
+        <table>
+          <div *ngFor="let manager of world.managers.pallier">
+            <div *ngIf="!manager.unlocked">
+              <tr>
+                <td>
+                  <div class="managername"> {{ manager.name}} </div>
+                  <img class="imgManager" [attr.src]="'http://192.168.43.80:8080/icones/'+manager.logo" />
+                </td>
+                <td>
+                  <div class="managercible"> {{ world.products.product[manager.idcible].name }} </div>
+                  <img class="imgProduitManager" [attr.src]="'http://192.168.43.80:8080/icones/'+world.products.product[manager.idcible].logo" />
+                </td>
+                <td>
+                  <div class="managercost"> {{ manager.seuil}} </div>
+                </td>
+                <td>
+                  <button class="hirebutton" (click)="hireManager(manager)"
+                       [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Engagez vous !</button>
+                </td>
+              </tr>
+            </div>
+          </div>
+        </table>
+      </div>
+    </div>
+
+    <!--Unlock DIV-->
+    <div *ngIf="showUnlocks" class="modal">
+      <div class="titl">Quels accomplissements pour mère patrie ?!</div>
       <div>
         <div *ngFor="let manager of world.managers.pallier">
           <div *ngIf="!manager.unlocked" class="managerslayout">
@@ -292,7 +358,57 @@ body{
             </div>
           </div>
         </div>
-        <button class="closebutton" mat-raisedbutton color="primary" (click)="showManagers = !showManagers">Close</button>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="showUnlocks = !showUnlocks">Close</button>
+      </div>
+    </div>
+
+    <!--Upgrade DIV-->
+    <div *ngIf="showUpgrades" class="modal">
+      <div class="titl">Quels améliorations pour mère patrie ?!</div>
+      <div>
+        <div *ngFor="let manager of world.managers.pallier">
+          <div *ngIf="!manager.unlocked" class="managerslayout">
+            <div>
+              <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
+            </div>
+            <div>
+              <div class="managername"> {{ manager.name}} </div>
+              <div class="managercible"> {{ world.products.product[manager.idcible1].name }} </div>
+              <div class="managercost"> {{ manager.seuil}} </div>
+            </div>
+            <div>
+              <div class="hirebutton" (click)="hireManager(manager)"
+                   [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+            </div>
+          </div>
+        </div>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="showUpgrades = !showUpgrades">Close</button>
+      </div>
+    </div>
+
+
+
+    <!--ANGELS DIV-->
+    <div *ngIf="showAngels" class="modal">
+      <div class="titl">Des camarades sont pret a rejoindre l'aventure !!</div>
+      <div>
+        <div *ngFor="let manager of world.managers.pallier">
+          <div *ngIf="!manager.unlocked" class="managerslayout">
+            <div>
+              <div class="logo"><img class="round" [attr.src]="manager.logo" /> </div>
+            </div>
+            <div>
+              <div class="managername"> {{ manager.name}} </div>
+              <div class="managercible"> {{ world.products.product[manager.idcible1].name }} </div>
+              <div class="managercost"> {{ manager.seuil}} </div>
+            </div>
+            <div>
+              <div class="hirebutton" (click)="hireManager(manager)"
+                   [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
+            </div>
+          </div>
+        </div>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="showAngels = !showAngels">Close</button>
       </div>
     </div>
   </div>

@@ -11,10 +11,11 @@ export class RestserviceService {
   //Ajout tuto
   constructor(private http: HttpClient) {
     //Serveur Claire
-    //this.server = "http://192.168.43.80:8080/";
+    this.server = "http://192.168.43.80:8080/";
 
     //Serveur Guillaume
-    this.server = "http://192.168.43.13:2612/";
+    //this.server = "http://192.168.43.13:2612/";
+
     this.user="";
   }
   //--
@@ -41,10 +42,10 @@ export class RestserviceService {
     //pathWorld : string;
     //pathWorld = "adventurecommunist/generic/world";
     //Serveur Claire
-    //return this.http.get(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
+    return this.http.get(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
 
     //serveur guillaume
-    return this.http.get(this.server + "Marseille-Capitalist/generic/world").toPromise().catch(this.handleError);
+    //return this.http.get(this.server + "Marseille-Capitalist/generic/world").toPromise().catch(this.handleError);
   };
 
   //--

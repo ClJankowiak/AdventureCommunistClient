@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 //Import tuto
 import { HttpClientModule } from '@angular/common/http';
 import {MatProgressBarModule} from '@angular/material/progress-bar'
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +25,7 @@ import { BigvaluePipe } from './bigvalue.pipe';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
+    MatSnackBarModule,
     HttpClientModule
   ],
   providers: [],

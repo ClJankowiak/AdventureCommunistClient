@@ -100,6 +100,10 @@
       ),
       #80201A;
   }
+  ::ng-deep .mat-progress-bar-buffer {
+    background-color:#A02921;
+  }
+
 }
 
 
@@ -108,11 +112,12 @@
 <div class="gridProduit" id="produitNom">
   <div id="nom">
     {{product.name}}
+    <div id="revenuCumule">{{revenuCumule}}</div>
   </div>
   <div class="gridProduit" id="produitgeneral">
     <div class="gridSousProduit" id="infoGeneral">
       <div id="imageProduit">
-        <img (click)="startFabrication()" [src]="'http://192.168.43.13:2612/icones/' + product.logo">
+        <img (click)="startFabrication()" [src]="'http://192.168.43.80:8080/icones/' + product.logo">
       </div>
       <div id="nombre">
         {{product.quantite}}
@@ -124,7 +129,7 @@
         </mat-progress-bar>
       </div>
       <div (click)="achatProduit()" id="cout">
-        {{prixSuivant}}
+        {{prixSuivant}} : {{maxBuy}}
       </div>
     </div>
   </div>
