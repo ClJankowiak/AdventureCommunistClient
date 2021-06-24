@@ -203,11 +203,19 @@ td{
   width:50px;
   height:auto;
 }
-closebutton{
+#closebutton{
   position:fixed;
   top:0px;
   right:0px;
 }
+.imgUnlock{
+  width:50px;
+  height:auto;
+}
+.seuilDepasse{
+  opacity:100%;
+}
+
 
 </style>
 
@@ -340,25 +348,76 @@ closebutton{
 
     <!--Unlock DIV-->
     <div *ngIf="showUnlocks" class="modal">
+      <button class="closebutton" mat-raisedbutton color="primary" (click)="showUnlocks = !showUnlocks">X</button>
       <div class="titl">Quels accomplissements pour mère patrie ?!</div>
       <div>
-        <div *ngFor="let manager of world.managers.pallier">
-          <div *ngIf="!manager.unlocked" class="managerslayout">
-            <div>
-              <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
-            </div>
-            <div>
-              <div class="managername"> {{ manager.name}} </div>
-              <div class="managercible"> {{ world.products.product[manager.idcible1].name }} </div>
-              <div class="managercost"> {{ manager.seuil}} </div>
-            </div>
-            <div>
-              <div class="hirebutton" (click)="hireManager(manager)"
-                   [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</div>
-            </div>
+        <table>
+        <div *ngFor="let product of world.products.product">
+        <div *ngFor="let unlock of product.palliers.pallier">
+          <div *ngIf="product.quantite<unlock.seuil">
+            <tr>
+              <td>
+                <img class="imgUnlock"(click)="startFabrication()" [src]="'http://192.168.43.80:8080/icones/' + product.logo">
+                <div > {{ unlock.name}} </div>
+              </td>
+              <td>
+                <div > {{ unlock.seuil}} </div>
+              </td>
+              <td>
+                <div > x {{ unlock.ratio}} </div>
+                <div > {{ unlock.typeratio}} </div>
+              </td>
+            </tr>
+          </div>
+          <div *ngIf="product.quantite>=unlock.seuil">
+            <tr class="seuilDepasse">
+            <td>
+              <img class="imgUnlock"(click)="startFabrication()" [src]="'http://192.168.43.80:8080/icones/' + product.logo">
+              <div > {{ unlock.name}} </div>
+            </td>
+            <td>
+              <div > {{ unlock.seuil}} </div>
+            </td>
+            <td>
+              <div > x {{ unlock.ratio}} </div>
+              <div > {{ unlock.typeratio}} </div>
+            </td>
+            </tr>
           </div>
         </div>
-        <button class="closebutton" mat-raisedbutton color="primary" (click)="showUnlocks = !showUnlocks">Close</button>
+        </div>
+        <div *ngFor="let unlock of world.allunlocks.pallier">
+          <div *ngIf="!unlock.unlocked">
+          <tr>
+            <td>
+              <div > {{ unlock.name}} </div>
+            </td>
+            <td>
+              <div > {{ unlock.seuil}} </div>
+            </td>
+            <td>
+              <div > x {{ unlock.ratio}} </div>
+              <div > {{ unlock.typeratio}} </div>
+            </td>
+          </tr>
+          </div>
+          <div *ngIf="unlock.unlocked">
+            <tr class="seuilDepasse">
+              <td>
+                <div > {{ unlock.name}} </div>
+              </td>
+              <td>
+                <div > {{ unlock.seuil}} </div>
+              </td>
+              <td>
+                <div > x {{ unlock.ratio}} </div>
+                <div > {{ unlock.typeratio}} </div>
+              </td>
+            </tr>
+          </div>
+        </div>
+        </table>
+
       </div>
     </div>
 

@@ -30,7 +30,7 @@ export class ProductComponent implements OnInit {
   _money : string;
   maxBuy: number;
   CoutMaxBuy : number;
-  test:string="OK";
+  test:string="";
   //money : string;
 
 
@@ -105,7 +105,7 @@ export class ProductComponent implements OnInit {
        this.calcMaxBuy();
      }
   }
-    achatProduit()
+  achatProduit()
   {
     if(this._qtmultiNumber==1){
       if(this.prixSuivant<=Number(this._money)){
@@ -115,16 +115,11 @@ export class ProductComponent implements OnInit {
         this.calcRevenuCumule();
       }
     }else if(this._qtmultiNumber==10){
-      if(this.prixSuivant<=Number(this._money)){
-        this.updatePrix();
-        this.notifyAchat.emit(this.product);
-        this.product.quantite=this.product.quantite+1;
-        this.calcRevenuCumule();
-      }
+
     }else if(this._qtmultiNumber==100){
 
     }
-
+    this.unlockSeuil();
   }
   calcCoutMaxBuy(){
     this.CoutMaxBuy = this.prixSuivant;
@@ -145,6 +140,13 @@ export class ProductComponent implements OnInit {
   logbase(n:number, base:number){
       return Math.log(n)/Math.log(base);
   }
+  unlockSeuil(){
+     for(let i=0;i<= this.product.palliers.pallier.length;i++){
+      if(this.product.palliers.pallier[i].seuil<this.product.quantite){
+        this.product.palliers.pallier[i].unlocked=true;
+      }
+     }
+  }
 
 
   calcScore(){
@@ -158,16 +160,15 @@ export class ProductComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
 
+
+  ngOnInit(): void {
     setTimeout(() => {this.calcRevenuCumule();},1);
     setInterval(() => { this.updatePrix(); }, 50);
     setInterval(() => { this.calcScore(); }, 50);
     setInterval(() => { this.calcMaxBuy(); }, 50);
     setInterval(() => { this.updateQtMax(); }, 50);
     setInterval(() => { this.managerUnlock(); }, 50);
-
-
   }
 
 }

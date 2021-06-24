@@ -21,6 +21,7 @@ export class AppComponent {
   public testNumber:number=0;
   public idCible:number=-1;
   public testBoolean :boolean=false;
+  public verif:boolean;
 
   public qtmulti : number =1;
   public commutateurString : string ="x 1";
@@ -57,7 +58,31 @@ export class AppComponent {
           this.popMessage("New challenger"+manager.name);
       }
     }
+  }
 
+  allUnlock(){
+    for(let i=0;i<= this.world.allunlocks.pallier.length;i++)
+    {
+       this.verif=true;
+       this.testBoolean=this.verif;
+       for(let j=0;j<= this.world.products.product.length;j++)
+       {
+         if(this.world.allunlocks.pallier[i].seuil<=this.world.products.product[j].quantite)
+         {
+           //this.popMessage(this.world.allunlocks.pallier[i].seuil + "<="+this.world.products.product[j].quantite);
+           this.verif=false;
+           this.testBoolean=this.verif;
+         }else
+         {
+           //this.popMessage("Produit OK");
+         }
+       }
+       if(this.verif==true)
+       {
+         this.world.allunlocks.pallier[i].unlocked=true;
+       }
+    }
+    //this.popMessage("tyu");
   }
 
 
@@ -67,6 +92,7 @@ export class AppComponent {
   }
   onBuy(P : Product){
       this.world.money=this.world.money-(P.cout*Math.pow(P.croissance,P.quantite-1));
+      this.allUnlock();
   }
   updateScore(N : number){
     this.world.score=this.world.score+N;
