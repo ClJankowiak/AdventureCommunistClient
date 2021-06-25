@@ -13,9 +13,11 @@ export class RestserviceService {
   constructor(private http: HttpClient) {
     //Serveur Claire
     this.server = "http://192.168.43.80:8080/";
+    this.path = "adventurecommunist/generic/";
 
     //Serveur Guillaume
-    //this.server = "http://192.168.43.13:2612/";
+    //this.server = "http://192.168.43.145:2612/";
+    //this.path = "Marseille-Capitalist/generic/";
 
     this.user="";
   }
@@ -23,10 +25,11 @@ export class RestserviceService {
 
   //Ajout tuto
   private server : string;
-  private user : string;
+  public user : string;
+  private path : string;
 
   getuser(): string {
-          return this.user;
+    return this.user;
   }
   setuser(u : string){
     this.user = u;
@@ -43,39 +46,37 @@ export class RestserviceService {
     //pathWorld : string;
     //pathWorld = "adventurecommunist/generic/world";
     //Serveur Claire
-    return this.http.get(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
+    //return this.http.get(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
 
     //serveur guillaume
-    //return this.http.get(this.server + "Marseille-Capitalist/generic/world").toPromise().catch(this.handleError);
+    return this.http.get(this.server + this.path+"world").toPromise().catch(this.handleError);
   };
 
   setHeaders(user:string):HttpHeaders{
-    return  new HttpHeaders();
+    var headers = new HttpHeaders({ 'X-User': user});
+    return headers;
   }
-
-
-  putManager(manager : Pallier): Promise<Object> {
-      return this.http.put(this.server+"adventurecommunist/generic/manager", manager, {headers: this.setHeaders(this.user)})
-      .toPromise();
+  putManager(manager : Pallier) {
+      this.http.put(this.server+ this.path+"manager", manager, {headers: this.setHeaders(this.user)}).toPromise();
     }
 
   putProduct(product : Product): Promise<Object> {
-    return this.http.put(this.server+"adventurecommunist/generic/product", product, {headers: this.setHeaders(this.user)})
+    return this.http.put(this.server+ this.path+"product", product, {headers: this.setHeaders(this.user)})
           .toPromise();
   }
 
   putUpgrades(upgrade : Pallier): Promise<Object> {
-    return this.http.put(this.server+"adventurecommunist/generic/upgrade", upgrade, {headers: this.setHeaders(this.user)})
+    return this.http.put(this.server+ this.path+"upgrade", upgrade, {headers: this.setHeaders(this.user)})
           .toPromise();
   }
 
   resetWorld(): Promise<Object> {
-    return this.http.delete(this.server + "adventurecommunist/generic/world").toPromise().catch(this.handleError);
+    return this.http.delete(this.server + this.path+"world").toPromise().catch(this.handleError);
     //forcer le reload dans le app component dans la méthode qui appelle reset (ou rappeler getWorld)
   }
 
   putAngelUpgrade(angelupgrade : Pallier): Promise<Object> {
-    return this.http.put(this.server+"adventurecommunist/generic/angelupgrade", angelupgrade, {headers: this.setHeaders(this.user)})
+    return this.http.put(this.server+ this.path+"angelupgrade", angelupgrade, {headers: this.setHeaders(this.user)})
               .toPromise();
   }
   //--

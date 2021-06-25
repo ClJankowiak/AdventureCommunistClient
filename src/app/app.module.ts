@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import {MatProgressBarModule} from '@angular/material/progress-bar'
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatBadgeModule} from '@angular/material/badge';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +28,8 @@ import { BigvaluePipe } from './bigvalue.pipe';
     BrowserAnimationsModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    MatBadgeModule,
+    FormsModule,
     HttpClientModule
   ],
   providers: [],

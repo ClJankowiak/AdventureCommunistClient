@@ -24,13 +24,20 @@ export class ProductComponent implements OnInit {
   public lastUpdate :number=0;
   public intervalle :number =50;
   public prixSuivant :number;
-  public revenuCumule : number;
+  public revenuCumule : number=0;
+  public cliquable: boolean = true;
   _qtmulti: string;
   _qtmultiNumber: number;
   _money : string;
+  _server:string;
+  _multiplicateur:string;
+  _multiplicateurVitesse:string;
+
   maxBuy: number;
   CoutMaxBuy : number;
-  test:string="";
+  test:string="TEST";
+  testN:number=0;
+  public tempsRestant:number;
   //money : string;
 
 
@@ -55,32 +62,53 @@ export class ProductComponent implements OnInit {
    set qtmulti(value: string) {
     this._qtmulti = value;
    }
+   @Input()
+    set server(value: string) {
+     this._server = value;
+    }
 
    @Input()
    set money(value: string) {
     this._money = value;
    }
+   @Input()
+    set multiplicateur(value: string) {
+     this._multiplicateur = value;
+    }
+    @Input()
+    set multiplicateurVitesse(value: string) {
+     this._multiplicateurVitesse = value;
+    }
 
   updateQTMulti(){
   }
 
-
   startFabrication() {
-    var calculProgressBar = setInterval(() => {
-        this.progressBarreValue=this.progressBarreValue+(100/(this.product.vitesse/this.intervalle));
-      }, this.intervalle);
+  this.tempsRestant=this.product.vitesse/Number(this._multiplicateurVitesse);
+    if(this.cliquable==true){
+      this.cliquable=false;
+      var calculProgressBar = setInterval(() => {
+          this.progressBarreValue=this.progressBarreValue+(100/(this.product.vitesse/Number(this._multiplicateurVitesse)/this.intervalle));
+          this.tempsRestant = this.tempsRestant-this.intervalle;
+        }, this.intervalle);
 
-    setTimeout(() => {
-        //this.product.quantite=this.product.quantite+1;
-        clearInterval(calculProgressBar);
-        this.progressBarreValue=10;
-        //this.updatePrix();
-        this.notifyProduction.emit(this.product);
-        if(this.product.managerUnlocked==true){
-              this.startFabrication();
-        }
-    }, this.product.vitesse);
+      setTimeout(() => {
+          //this.product.quantite=this.product.quantite+1;
+          clearInterval(calculProgressBar);
+          this.progressBarreValue=10;
+          //this.updatePrix();
+          this.notifyProduction.emit(this.product);
+          if(this.product.managerUnlocked==true){
+                this.startFabrication();
+          }
+          this.tempsRestant=0;
+          this.cliquable=true;
+      }, this.product.vitesse/Number(this._multiplicateurVitesse));
+    }
+    //this.tempsRestant=0;
   }
+
+
   managerUnlock(){
     if(this.product.managerUnlocked==true && this.product.quantite!=0){
       this.startFabrication();
@@ -102,38 +130,49 @@ export class ProductComponent implements OnInit {
       }else if(this._qtmulti=="x 100"){
        this._qtmultiNumber=100;
      }else if(this._qtmulti=="Max"){
+      this._qtmultiNumber=0;
        this.calcMaxBuy();
      }
   }
-  achatProduit()
+ achatProduit()
   {
-    if(this._qtmultiNumber==1){
-      if(this.prixSuivant<=Number(this._money)){
-        this.updatePrix();
-        this.notifyAchat.emit(this.product);
-        this.product.quantite=this.product.quantite+1;
-        this.calcRevenuCumule();
-      }
-    }else if(this._qtmultiNumber==10){
-
-    }else if(this._qtmultiNumber==100){
-
-    }
+    //this.updatePrix();
+    this.notifyAchat.emit(this.product);
+    //this.product.quantite=this.product.quantite+1;
+    this.calcRevenuCumule();
     this.unlockSeuil();
   }
   calcCoutMaxBuy(){
+
+    this.CoutMaxBuy=0;
+    if(this.maxBuy==1){
     this.CoutMaxBuy = this.prixSuivant;
-    for(let i=0;i<=this.maxBuy;i++){
-     this.CoutMaxBuy = this.CoutMaxBuy+(Math.pow(this.product.croissance,this.product.quantite+i-1));
+    }else{
+      for(let i=0;i<=this.maxBuy;i++){
+       this.CoutMaxBuy = this.CoutMaxBuy+(Math.pow(this.product.croissance,this.product.quantite+i-1));
+      }
     }
   }
 
   calcMaxBuy(){
     //Calcul du nombre maximum
-    this.maxBuy=1-(1-this.product.croissance)*(Number(this._money)/this.prixSuivant);
-    this.maxBuy = this.logbase(this.maxBuy,this.product.croissance);
-    this.maxBuy = Math.floor(this.maxBuy);
-    this._qtmultiNumber=this.maxBuy;
+    this.testN=this._qtmultiNumber;
+    if(this._qtmultiNumber==0){
+      this.maxBuy = 1-(1-this.product.croissance)*(Number(this._money)/this.prixSuivant);
+      this.maxBuy = this.logbase(this.maxBuy,this.product.croissance);
+      this.maxBuy = Math.floor(this.maxBuy);
+      this.calcCoutMaxBuy();
+      //this._qtmultiNumber=this.maxBuy;
+    }else if(this._qtmultiNumber==1){
+      this.maxBuy=1;
+      this.calcCoutMaxBuy();
+    }else if(this._qtmultiNumber==10){
+     this.maxBuy=10;
+     this.calcCoutMaxBuy();
+    }else if(this._qtmultiNumber==100){
+      this.maxBuy=100;
+      this.calcCoutMaxBuy();
+    }
   }
 
 
@@ -156,11 +195,8 @@ export class ProductComponent implements OnInit {
     }*/
   }
   calcRevenuCumule(){
-    this.revenuCumule=this.product.revenu*this.product.quantite;
+    this.revenuCumule=this.product.revenu*this.product.quantite*Number(this._multiplicateur);
   }
-
-
-
 
   ngOnInit(): void {
     setTimeout(() => {this.calcRevenuCumule();},1);
@@ -169,6 +205,7 @@ export class ProductComponent implements OnInit {
     setInterval(() => { this.calcMaxBuy(); }, 50);
     setInterval(() => { this.updateQtMax(); }, 50);
     setInterval(() => { this.managerUnlock(); }, 50);
+    setInterval(() => { this.calcRevenuCumule(); }, 50);
   }
 
 }

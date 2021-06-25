@@ -117,7 +117,7 @@
   <div class="gridProduit" id="produitgeneral">
     <div class="gridSousProduit" id="infoGeneral">
       <div id="imageProduit">
-        <img (click)="startFabrication()" [src]="'http://192.168.43.80:8080/icones/' + product.logo">
+        <img (click)="startFabrication()" [attr.src]="_server+'/icones/'+product.logo">
       </div>
       <div id="nombre">
         {{product.quantite}}
@@ -129,8 +129,10 @@
         </mat-progress-bar>
       </div>
       <div (click)="achatProduit()" id="cout">
-        {{prixSuivant}} : {{maxBuy}}
+        <span [innerHTML]="CoutMaxBuy | bigvalue"></span> : {{maxBuy}}
       </div>
     </div>
   </div>
+
 </div>
+{{tempsRestant}}
